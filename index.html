@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="steering"></div>
+    <div class="health">
+        <label for="file">Health:</label>
+        <progress id="health" value="32" max="5000"> 32% </progress>
+    </div>
+    <!-- imgs -->
+    <img id="car1" src="car1.png" width="100px" style="position:absolute; top:0; display: none ;">
+    <img id="car2" src="car3.png" width="100px" style="position:absolute; top:0; display: none ;">
+    <img id="car3" src="car2.png" width="100px" style="position:absolute; top:0; display: none ;">
+    <img id="car4" src="car4.png" width="100px" style="position:absolute; top:0; display: none ;">
+
+    <img id="police" src="policecar.png" width="100px" style="position:absolute; top:0; display: none ;">
+    
+
+    <img src="slightbendinroadleft.png" width="100px" style="position:absolute; top:0; display: none;" id="slightbendinroadleft">
+    <img id="speedLimit" src="speedLimit.png" width="100px" style="position:absolute; top:0; display: none ;">
+    <img src="stoplightahead.png" width="100px" style="position:absolute; top:0; display: none;" id="stoplightahead">   
+
+    <!-- imgs -->
+
+    <div class="speed"></div>
+    <div class="menu" onclick="openMenu()">Menu</div>
+    <div class="coverScreen" onclick="closeMenu()"></div>
+    <div class="gamemenu">
+    <div class="coverScreen" onclick="closeMenu()"></div>
+        
+        Car: <car></car><br>
+        Max Wheel Angle: <input type="range" min="1" max="89" class="slider" id="s1"><i1 class="info"></i1> <br>
+        Wheel Angle Increment: <input type="range" min="0" max="24" class="slider" id="s2"><i2 class="info"></i2> <br>
+        Brake Sensitivity: <input type="range" min="101" max="500" class="slider" id="s3"><i3 class="info"></i3> <br>
+        Max Speed: <input type="range" min="1" max="180" class="slider" id="s4"><i4 class="info"></i4> <br>
+        Max Reverse Speed: <input type="range" min="1" max="150" class="slider" id="s5"><i5 class="info"></i5> <br>
+        Acceleration: <input type="range" min="1" max="100" class="slider" id="s6"><i6 class="info"></i6> <br>
+        Mode: <button style="font-size: 25px; padding: 2px;" id="togbtn1" onclick="tog1()">Survival</button><br>
+        Car friction: <button style="font-size: 25px; padding: 2px;" id="togbtn2" onclick="tog2()">Off</button><br> 
+        Friction: <input type="range" min="1" max="99" class="slider" id="s7"><i7 class="info"></i7> <br>
+        Zoom: <input type="range" min="1" max="500" class="slider" id="s8"><i8 class="info"></i8> <br>
+        Map Zoom: <input type="range" min="1" max="500" class="slider" id="s9"><i9 class="info"></i9> <br>
+        Steering Wheel Angle Sensitivity: <input type="range" min="1" max="10" class="slider" id="s10"><i10 class="info"></i10> <br>
+        <div style="text-align: center;">
+            <button onclick="closeMenu()">Close Menu</button>
+        </div>
+    </div>
+    <canvas id="canvas1"></canvas>
+    <canvas id="mapcanvas" style="right: 0px; top: 0px; position: absolute;"></canvas>
+    <div class="startScreen">
+        <h1>Car Game</h1><br>
+        <div class="line"></div><br>
+        <h2>Controls</h2><br>
+        W, Up Arrow ----- Forward<br>
+        S, Down Arrow ----- Backwards<br>
+        D, Right Arrow ----- Turn Right<br>
+        A, Left Arrow ----- Turn Left<br>
+        Space ----- Brake<br>
+        B ----- Hand Brake<br>
+        Steering wheel on the left side - alternative to D and A keys <br>
+        Menu Button - ajust settings for the game<br><br>
+        <div class="line"></div><br>
+        <h2>Objective</h2><br>
+        Survival Mode - Police Cars try to hit you, after a certain amount of hits you die<br><br>
+        Explorer Mode - Police Cars are not after you, you can still get hit but you can't die<br><br>
+        <button style="font-size: 15px;" id="survival" onclick="survival()">Survival Mode</button>
+        <button style="font-size: 15px;" id="explorer" onclick="explorer()">Explorer Mode</button>
+        <br><br>
+        <button onclick="start()">Start</button>
+    </div>
+    <div class="deathScreen">
+        You Dead.<br><br>
+        Sorry about that.<br><br>
+        <button style="font-size: 20px;" id="explorer" onclick="continueGame('s')">Continue where you left 0ff</button><br><br>
+        <button style="font-size: 20px;" id="survival" onclick="newGame()">New Game</button><Br><br>
+        <button style="font-size: 20px;" id="explorer" onclick="continueGame('e')">Continue where you left 0ff in Explorer Mode</button>
+
+
+    </div>
+</body>
+<script src="Vector2D.js"></script>
+<script src= "drawUtils.js"></script>
+<script src= "keyboard.js"></script>
+<script src="Camera.js"></script>
+<script src="roads.js"></script>
+<script src= "main.js"></script>
+<script src= "physicsSkidding.js"></script>
+<script src= "collsions.js"></script>
+<script src= "signs.js"></script>
+<script src="nonplayers.js"></script>
+<script src= "turningCalc.js"></script>
+<script src= "game.js"></script>
+<script>
+    var string = [
+        " ////////////////////               ///        ///   ///        ///",
+        "         //         ///////////     ///        ///   /////      ///",
+        "         //       ///         ///   ///        ///   ///  //    ///",
+        "         //       //           //   //////////////   ///    //  ///",
+        "//       //       //           //   ///        ///   ///      /////",
+        " ///    ///       ///         ///   ///        ///   ///        ///",
+        "  ////////          ///////////     ///        ///   ///        ///",
+    ]
+
+    console.log('%c' + string[0] + '\n' + string[1] + '\n' + string[2] + '\n' + string[3] + '\n' + string[4] + '\n' + string[5] + '\n' + string[6], 'color: #1c87c9; font-size: 18px');        
+
+</script>
+</html>
